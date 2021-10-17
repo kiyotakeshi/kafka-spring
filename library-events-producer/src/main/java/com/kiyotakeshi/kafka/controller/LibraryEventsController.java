@@ -32,8 +32,9 @@ public class LibraryEventsController {
         // invoke kafka producer
         log.info("before send libraryevent");
         // libraryEventProducer.sendLibraryEvent(libraryEvent);
-        SendResult<Integer, String> sendResult = libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
-        log.info("send result is {}", sendResult.toString());
+        libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
+        // SendResult<Integer, String> sendResult = libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
+        // log.info("send result is {}", sendResult.toString());
         log.info("after send libraryevent");
 
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
