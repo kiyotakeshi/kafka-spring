@@ -2,6 +2,7 @@ package com.kiyotakeshi.kafka.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.kiyotakeshi.kafka.domain.LibraryEvent;
+import com.kiyotakeshi.kafka.domain.LibraryEventType;
 import com.kiyotakeshi.kafka.producer.LibraryEventProducer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,9 @@ public class LibraryEventsController {
     public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent) throws JsonProcessingException, ExecutionException, InterruptedException, TimeoutException {
 
         // invoke kafka producer
+
         log.info("before send libraryevent");
+        libraryEvent.setLibraryEventType(LibraryEventType.NEW);
         // libraryEventProducer.sendLibraryEvent(libraryEvent);
         libraryEventProducer.sendLibraryEvent_Approach2(libraryEvent);
         // SendResult<Integer, String> sendResult = libraryEventProducer.sendLibraryEventSynchronous(libraryEvent);
