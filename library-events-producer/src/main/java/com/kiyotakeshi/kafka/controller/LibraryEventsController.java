@@ -14,11 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/v1")
 public class LibraryEventsController {
 
+    private LibraryEventProducer libraryEventProducer;
+
+    public LibraryEventsController(LibraryEventProducer libraryEventProducer) {
+        this.libraryEventProducer = libraryEventProducer;
+    }
 
     @PostMapping("/libraryevent")
     public ResponseEntity<LibraryEvent> postLibraryEvent(@RequestBody LibraryEvent libraryEvent) throws JsonProcessingException {
 
         // invoke kafka producer
+        libraryEventProducer.sendLibraryEvent(libraryEvent);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(libraryEvent);
     }
