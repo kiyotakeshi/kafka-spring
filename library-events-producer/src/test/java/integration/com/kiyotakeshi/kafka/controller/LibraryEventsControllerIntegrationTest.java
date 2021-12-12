@@ -7,10 +7,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.*;
+import org.springframework.kafka.test.context.EmbeddedKafka;
+import org.springframework.test.context.TestPropertySource;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+// if you don't write @EmbeddedKafka and @TestPropertySource, the test use local machine kafka broker
+@EmbeddedKafka(topics = {"library-events"}, partitions = 3)
+// @see org/springframework/kafka/test/EmbeddedKafkaBroker.java
+@TestPropertySource(properties =
+        {
+                "spring.kafka.producer.bootstrap-servers=${spring.embedded.kafka.brokers}",
+                "spring.kafka.admin.properties.bootstrap.servers=${spring.embedded.kafka.brokers}",
+        })
 public class LibraryEventsControllerIntegrationTest {
 
     @Autowired
