@@ -1,0 +1,55 @@
+version: '3.4'
+services:
+  zookeeper:
+    image: 'bitnami/zookeeper:3.5.9'
+    ports:
+      - '2181:2181'
+    volumes:
+      - '.docker/zookeeper_data:/bitnami'
+    environment:
+      - ALLOW_ANONYMOUS_LOGIN=yes
+  kafka1:
+    image: 'bitnami/kafka:3.0.0' # not zookeeper less image
+    ports:
+      - '9092:9092'
+    volumes:
+      - '.docker/kafka1/data:/bitnami/kafka/data'
+    environment:
+      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+      - KAFKA_CFG_LISTENERS=CLIENT://:9090,EXTERNAL://:9092
+      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka1:9090,EXTERNAL://localhost:9092
+      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+      - ALLOW_PLAINTEXT_LISTENER=yes
+    depends_on:
+      - zookeeper
+#  kafka2:
+#    image: 'bitnami/kafka:3.0.0'
+#    ports:
+#      - '9093:9093'
+#    volumes:
+#      - '.docker/kafka2/data:/bitnami/kafka/data'
+#    environment:
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+#      - KAFKA_CFG_LISTENERS=CLIENT://:9090,EXTERNAL://:9093
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka2:9090,EXTERNAL://localhost:9093
+#      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#    depends_on:
+#      - zookeeper
+#  kafka3:
+#    image: 'bitnami/kafka:3.0.0'
+#    ports:
+#      - '9094:9094'
+#    volumes:
+#      - '.docker/kafka3/data:/bitnami/kafka/data'
+#    environment:
+#      - KAFKA_CFG_ZOOKEEPER_CONNECT=zookeeper:2181
+#      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CLIENT:PLAINTEXT,EXTERNAL:PLAINTEXT
+#      - KAFKA_CFG_LISTENERS=CLIENT://:9090,EXTERNAL://:9094
+#      - KAFKA_CFG_ADVERTISED_LISTENERS=CLIENT://kafka3:9090,EXTERNAL://localhost:9094
+#      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=CLIENT
+#      - ALLOW_PLAINTEXT_LISTENER=yes
+#    depends_on:
+#      - zookeeper
