@@ -1,2 +1,4 @@
+// @see https://docs.gradle.org/current/samples/sample_building_java_applications_multi_project.html#review_the_project_files
 rootProject.name = 'kafka-spring'
 include 'library-events-producer'
+include 'library-events-consumer'
