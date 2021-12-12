@@ -1,10 +1,19 @@
 spring:
   kafka:
     consumer:
+      # @see org/springframework/boot/autoconfigure/kafka/KafkaAutoConfiguration.java#kafkaConsumerFactory
+      # @see org/springframework/boot/autoconfigure/kafka/KafkaProperties.java#buildCommonProperties
       bootstrap-servers:
         - localhost:9092
         - localhost:9093
         - localhost:9094
       key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      group-id: liberary-events-group
+
+      # run application, automatically rebalanced consumer group
+      # library-events-group: partitions assigned: [library-events-1, library-events-2, library-events-0]
+      # run two same application
+      # java -jar library-events-consumer/build/libs/library-events-consumer-0.0.1-SNAPSHOT.jar
+      # library-events-group: partitions assigned: [library-events-2]
+      # library-events-group: partitions assigned: [library-events-1, library-events-0]
+      group-id: library-events-group

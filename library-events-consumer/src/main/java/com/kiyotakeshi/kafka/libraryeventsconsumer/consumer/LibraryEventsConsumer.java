@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 @Slf4j
 public class LibraryEventsConsumer {
 
+    // use ConcurrentKafkaListenerContainerFactory default
+    // @see
+    // org/springframework/boot/autoconfigure/kafka/KafkaAutoConfiguration.java -> KafkaAnnotationDrivenConfiguration
+    // org/springframework/boot/autoconfigure/kafka/KafkaAnnotationDrivenConfiguration.java#kafkaListenerContainerFactory
     @KafkaListener(topics = {"library-events"})
     public void onMessage(ConsumerRecord<Integer, String> consumerRecord) {
         log.info("ConsumerRecord: {} ", consumerRecord);
