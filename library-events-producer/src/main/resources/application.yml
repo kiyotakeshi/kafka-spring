@@ -9,6 +9,11 @@ spring:
         - localhost:9094
       key-serializer: org.apache.kafka.common.serialization.IntegerSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      properties:
+        # @see https://kafka.apache.org/documentation/#producerconfigs_acks
+        # > This is equivalent to the acks=-1 setting.
+        acks: all
+        retries: 10
     admin:
       properties:
 #        bootstrap.servers: localhost:9092
