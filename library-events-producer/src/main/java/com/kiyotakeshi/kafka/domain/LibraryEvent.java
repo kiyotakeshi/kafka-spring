@@ -2,6 +2,9 @@ package com.kiyotakeshi.kafka.domain;
 
 import lombok.*;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
@@ -9,5 +12,8 @@ import lombok.*;
 public class LibraryEvent {
     private Integer libraryEventId;
     private LibraryEventType libraryEventType;
+
+    @NotNull
+    @Valid
     private Book book;
 }
