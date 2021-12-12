@@ -22,7 +22,7 @@ import java.util.concurrent.TimeoutException;
 @Slf4j
 public class LibraryEventProducer {
 
-    private final String topic = "library-events";
+    private final String TOPIC = "library-events";
 
     private final KafkaTemplate<Integer, String> kafkaTemplate;
 
@@ -54,8 +54,9 @@ public class LibraryEventProducer {
         Integer key = libraryEvent.getLibraryEventId();
         String value = objectMapper.writeValueAsString(libraryEvent);
 
-        ProducerRecord<Integer, String> producerRecord = buildProducerRecord(key, value, topic);
+        ProducerRecord<Integer, String> producerRecord = buildProducerRecord(key, value, TOPIC);
 
+        // ListenableFuture<SendResult<Integer, String>> listenableFuture = kafkaTemplate.send("library-events", key, value);
         ListenableFuture<SendResult<Integer, String>> listenableFuture = kafkaTemplate.send(producerRecord);
         listenableFuture.addCallback(new ListenableFutureCallback<SendResult<Integer, String>>() {
             @Override
@@ -71,6 +72,7 @@ public class LibraryEventProducer {
     }
 
     private ProducerRecord<Integer, String> buildProducerRecord(Integer key, String value, String topic) {
+        // you can add additional information to the record
         List<Header> recordHeaders = List.of(
                 new RecordHeader("event-source", "scanner".getBytes())
                 // , new RecordHeader("event-source2", "scanner2".getBytes())
@@ -83,6 +85,7 @@ public class LibraryEventProducer {
         String value = objectMapper.writeValueAsString(libraryEvent);
         SendResult<Integer, String> sendResult = null;
         try {
+            // .get() wait until the future(record) return successfully
             sendResult = kafkaTemplate.sendDefault(key, value).get(1, TimeUnit.SECONDS);
         } catch (ExecutionException | InterruptedException e) {
             log.error("ExecutionException | InterruptedException sending the message and  the exception is {}", e.getMessage());
