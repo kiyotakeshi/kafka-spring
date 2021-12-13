@@ -1,3 +1,4 @@
+
 spring:
   kafka:
     consumer:
@@ -17,3 +18,15 @@ spring:
       # library-events-group: partitions assigned: [library-events-2]
       # library-events-group: partitions assigned: [library-events-1, library-events-0]
       group-id: library-events-group
+  datasource:
+    url: jdbc:h2:mem:testdb
+    driver-class-name: org.h2.Driver
+  jpa:
+    database: h2
+    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: true
+  h2:
+    console:
+      enabled: true
+server:
+  port: 8081
